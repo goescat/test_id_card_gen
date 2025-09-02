@@ -321,8 +321,8 @@
   on($('#clear2'), 'click', ()=>{ f21.value=''; f22.value=''; f23.value=''; renderAll(); });
 
   // 設定固定底圖載入
-  const BASE1_SRC = 'img/ROC_ID_F.JPG';
-  const BASE2_SRC = 'img/ROC_ID_B.JPG';
+  const BASE1_SRC = 'test_id_card_gen/img/ROC_ID_F.JPG';
+  const BASE2_SRC = 'test_id_card_gen/img/ROC_ID_B.JPG';
   img1.onload = ()=>{ fitCanvasToImage(c1, img1); renderImage1(); };
   img2.onload = ()=>{ fitCanvasToImage(c2, img2); renderImage2(); };
   img1.src = BASE1_SRC; img2.src = BASE2_SRC;
