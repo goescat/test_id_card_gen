@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>測試圖片產生器（兩張底圖 + 指定欄位 + 條碼）</title>
+  <title>測試證件產生器</title>
   <style>
     :root{
       --gap: 16px;
@@ -51,19 +51,16 @@
 </head>
 <body>
   <header>
-    <h1>測試圖片產生器（兩張底圖 + 指定欄位 + 條碼）</h1>
-    <span class="pill">需求：第一圖 1-1〜1-8、第二圖 2-1〜2-3 + 2-4 條碼（取自 1-8）</span>
+    <h1>測試證件產生器</h1>
   </header>
 
   <main>
     <div class="grid">
-      <!-- 圖一 -->
       <section class="card" id="panel1">
-        <h2>第一圖：固定底圖 + 特定位置（1-1〜1-8）</h2>
+        <h2>證件正面</h2>
         <div class="content">
-          <div class="row"><label>底圖</label><div class="hint">已固定，請在程式常數 <span class="kbd">BASE1_SRC</span> 更換路徑（預設：<span class="kbd">base1.png</span>）。</div></div>
           <div class="row"><label>姓名</label><input id="id_name" type="text" value="姓名" /></div>
-          <div class="row"><label>出生年</label><input id="birth_y" type="text" inputmode="numeric" pattern="[0-9]*" value="85" /></div>
+          <div class="row"><label>出生年</label><input id="birth_y" type="text" inputmode="numeric" pattern="[0-9]*" value="80" /></div>
           <div class="row"><label>出生月</label><input id="birth_m" type="text" inputmode="numeric" pattern="[0-9]*" value="10" /></div>
           <div class="row"><label>出生日</label><input id="birth_d" type="text" inputmode="numeric" pattern="[0-9]*" value="23" /></div>
           <div class="row"><label>發證年</label><input id="card_issue_y" type="text" inputmode="numeric" pattern="[0-9]*" value="103" /></div>
@@ -73,52 +70,32 @@
             <label>身分證字號</label>
             <div class="btns">
               <input id="id_number" type="text" value="" style="min-width:240px" />
-              <button type="button" id="rand15">隨機產生</button>
+              <button type="button" id="rand18">隨機產生</button>
               <span class="hint">此值將用於第二圖 2-4 條碼</span>
             </div>
           </div>
           <div class="row">
-            <label>輔助</label>
-            <div class="btns">
-              <label><input type="checkbox" id="toggleCross" checked /> 顯示參考十字</label>
-            </div>
           </div>
           <canvas id="canvas1" width="1000" height="600"></canvas>
           <div class="btns">
-            <button type="button" id="dl1">下載第一圖 PNG</button>
-            <button type="button" class="secondary" id="clear1">清空欄位（保留底圖）</button>
+            <button type="button" id="dl1">下載正面</button>
           </div>
         </div>
       </section>
 
-      <!-- 圖二 -->
       <section class="card" id="panel2">
-        <h2>第二圖：固定底圖 + 特定位置（2-1〜2-3）+ 2-4 條碼（取自 1-5）</h2>
+        <h2>證件背面</h2>
         <div class="content">
-          <div class="row"><label>底圖</label><div class="hint">已固定，請在程式常數 <span class="kbd">BASE2_SRC</span> 更換路徑（預設：<span class="kbd">base2.png</span>）。</div></div>
-          <div class="row"><label>2-1（文字）</label><input id="f21" type="text" value="示例文字 B1" /></div>
-          <div class="row"><label>2-2（文字）</label><input id="f22" type="text" value="示例文字 B2" /></div>
-          <div class="row"><label>2-3（文字）</label><input id="f23" type="text" value="示例文字 B3" /></div>
-
-          <div class="row">
-            <label>2-4（條碼）</label>
-            <div>
-              <div class="hint">會自動使用 第一圖 1-5 的值產生 Code128 條碼並顯示於預設位置。</div>
-              <div class="row inline" style="margin-top:8px">
-                <label class="hint">X%</label><input id="bcx" type="number" min="0" max="100" step="1" value="8" />
-                <label class="hint">Y%</label><input id="bcy" type="number" min="0" max="100" step="1" value="48" />
-              </div>
-              <div class="row inline" style="margin-top:8px">
-                <label class="hint">寬%</label><input id="bcw" type="number" min="1" max="100" step="1" value="60" />
-                <label class="hint">高%</label><input id="bch" type="number" min="1" max="100" step="1" value="20" />
-              </div>
-            </div>
-          </div>
+          <div class="row"><label>父</label><input id="father_name" type="text" value="父親名" /></div>
+          <div class="row"><label>母</label><input id="mother_name" type="text" value="母親名" /></div>
+          <div class="row"><label>配偶</label><input id="spouse_name" type="text" value="配偶名" /></div>
+          <div class="row"><label>役別</label><input id="military" type="text" value="免役" /></div>
+          <div class="row"><label>住址</label><input id="address" type="text" value="台北市信義區測試里99鄰預設路12號" />
+        </div>
 
           <canvas id="canvas2" width="1000" height="600"></canvas>
           <div class="btns">
-            <button type="button" id="dl2">下載第二圖 PNG</button>
-            <button type="button" class="secondary" id="clear2">清空欄位（保留底圖）</button>
+            <button type="button" id="dl2">下載背面</button>
           </div>
         </div>
       </section>
@@ -143,10 +120,11 @@
   };
 
   const layout2 = {
-    '2-1': { x: 8,  y: 15, fontH: 6, bold:true },
-    '2-2': { x: 8,  y: 27, fontH: 5 },
-    '2-3': { x: 8,  y: 37, fontH: 5 },
-    // 2-4 條碼使用單獨控制（百分比） bcX, bcY, bcW, bcH
+    '2-1': { x: 14,  y: 12, fontH: 6 },
+    '2-2': { x: 55,  y: 12, fontH: 6 },
+    '2-3': { x: 20,  y: 25, fontH: 6 },
+    '2-4': { x: 60,  y: 25, fontH: 6 },
+    '2-5': { x: 20,  y: 54, fontH: 5 },
   };
 
   // Helpers
@@ -243,11 +221,10 @@
   const card_issue_m = $('#card_issue_m');
   const card_issue_d = $('#card_issue_d');
   const id_number = $('#id_number');
-  const f21 = $('#f21');
-  const f22 = $('#f22');
-  const f23 = $('#f23');
+  const father_name = $('#father_name');
+  const mother_name = $('#mother_name');
+  const spouse_name = $('#spouse_name');
   const rand18 = $('#rand18');
-  const toggleCross = $('#toggleCross');
 
   const bcx = $('#bcx');
   const bcy = $('#bcy');
@@ -281,7 +258,6 @@
     const p_card_issue_m = drawText(ctx1, card_issue_m.value, layout1['1-6'], W, H);
     const p_card_issue_d = drawText(ctx1, card_issue_d.value, layout1['1-7'], W, H);
     const p_id_number = drawText(ctx1, id_number.value, layout1['1-8'], W, H);
-    if(toggleCross.checked){ [p_id_name,p_birth_y,p_birth_m,p_birth_d,p_card_issue_y,p_card_issue_m,p_card_issue_d,p_id_number].forEach(p=>cross(ctx1,p.x,p.y)); }
   }
 
   function renderBarcodeIntoTmp(value, targetW, targetH){
@@ -312,27 +288,28 @@
   function renderImage2(){
     drawBase(ctx2, c2, img2);
     const W = c2.width, H = c2.height;
-    const p21 = drawText(ctx2, f21.value, layout2['2-1'], W, H);
-    const p22 = drawText(ctx2, f22.value, layout2['2-2'], W, H);
-    const p23 = drawText(ctx2, f23.value, layout2['2-3'], W, H);
-    if(toggleCross.checked){ [p21,p22,p23].forEach(p=>cross(ctx2,p.x,p.y)); }
+    const p_father_name = drawText(ctx2, father_name.value, layout2['2-1'], W, H);
+    const p_mother_name = drawText(ctx2, mother_name.value, layout2['2-2'], W, H);
+    const p_spouse_name = drawText(ctx2, spouse_name.value, layout2['2-3'], W, H);
+    const p_military = drawText(ctx2, military.value, layout2['2-4'], W, H);
+    const p_address = drawText(ctx2, address.value, layout2['2-5'], W, H);
+
 
     // 條碼（來自 1-5）
     const code = id_number.value || '';
-    const targetW = Math.max(10, Math.round((Number(bcw.value)||60)/100 * W));
-    const targetH = Math.max(10, Math.round((Number(bch.value)||20)/100 * H));
+    const targetW = Math.max(10, Math.round((Number(35)||60)/100 * W));
+    const targetH = Math.max(10, Math.round((Number(16)||20)/100 * H));
     renderBarcodeIntoTmp(code, targetW, targetH);
-    const x = Math.round((Number(bcx.value)||8)/100 * W);
-    const y = Math.round((Number(bcy.value)||48)/100 * H);
+    const x = Math.round((Number(15)||8)/100 * W);
+    const y = Math.round((Number(70)||48)/100 * H);
     ctx2.drawImage(bcTmp, x, y, targetW, targetH);
-    if(toggleCross.checked){ cross(ctx2, x, y); }
   }
 
   function renderAll(){ renderImage1(); renderImage2(); }
 
   // 綁定事件
   ['input','change'].forEach(ev=>{
-    [id_name,birth_y,birth_m,birth_d,card_issue_y,card_issue_m,card_issue_d,id_number,f21,f22,f23,bcx,bcy,bcw,bch,toggleCross].forEach(el=> on(el, ev, renderAll));
+    [id_name,birth_y,birth_m,birth_d,card_issue_y,card_issue_m,card_issue_d,id_number,father_name,mother_name,spouse_name,bcx,bcy,bcw,bch].forEach(el=> on(el, ev, renderAll));
   });
 
   on($('#img1'), 'change', (e)=>{
@@ -360,10 +337,6 @@
   }
   on($('#dl1'), 'click', ()=> downloadCanvas(c1, 'image1.png'));
   on($('#dl2'), 'click', ()=> downloadCanvas(c2, 'image2.png'));
-
-  on($('#clear1'), 'click', ()=>{ id_name.value=''; birth_y.value=''; birth_m.value=''; birth_d.value=''; card_issue_y.value=''; card_issue_m.value=''; card_issue_d.value=''; id_number.value=''; /* 保留 id_number 以便條碼 */ renderAll(); });
-  on($('#clear2'), 'click', ()=>{ f21.value=''; f22.value=''; f23.value=''; renderAll(); });
-
   // 設定固定底圖載入
   const BASE1_SRC = 'img/ROC_ID_F.JPG';
   const BASE2_SRC = 'img/ROC_ID_B.JPG';
