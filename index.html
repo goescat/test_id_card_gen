@@ -61,10 +61,7 @@
       <section class="card" id="panel1">
         <h2>第一圖：固定底圖 + 特定位置（1-1〜1-5）</h2>
         <div class="content">
-          <div class="row">
-            <label for="img1">底圖上傳</label>
-            <input id="img1" type="file" accept="image/*" />
-          </div>
+          <div class="row"><label>底圖</label><div class="hint">已固定，請在程式常數 <span class="kbd">BASE1_SRC</span> 更換路徑（預設：<span class="kbd">base1.png</span>）。</div></div>
           <div class="row"><label>1-1（文字）</label><input id="f11" type="text" value="示例文字 A" /></div>
           <div class="row"><label>1-2（數字）</label><input id="f12" type="text" inputmode="numeric" pattern="[0-9]*" value="123" /></div>
           <div class="row"><label>1-3（數字）</label><input id="f13" type="text" inputmode="numeric" pattern="[0-9]*" value="456" /></div>
@@ -95,10 +92,7 @@
       <section class="card" id="panel2">
         <h2>第二圖：固定底圖 + 特定位置（2-1〜2-3）+ 2-4 條碼（取自 1-5）</h2>
         <div class="content">
-          <div class="row">
-            <label for="img2">底圖上傳</label>
-            <input id="img2" type="file" accept="image/*" />
-          </div>
+          <div class="row"><label>底圖</label><div class="hint">已固定，請在程式常數 <span class="kbd">BASE2_SRC</span> 更換路徑（預設：<span class="kbd">base2.png</span>）。</div></div>
           <div class="row"><label>2-1（文字）</label><input id="f21" type="text" value="示例文字 B1" /></div>
           <div class="row"><label>2-2（文字）</label><input id="f22" type="text" value="示例文字 B2" /></div>
           <div class="row"><label>2-3（文字）</label><input id="f23" type="text" value="示例文字 B3" /></div>
@@ -326,7 +320,14 @@
   on($('#clear1'), 'click', ()=>{ f11.value=''; f12.value=''; f13.value=''; f14.value=''; /* 保留 f15 以便條碼 */ renderAll(); });
   on($('#clear2'), 'click', ()=>{ f21.value=''; f22.value=''; f23.value=''; renderAll(); });
 
-  // 初始渲染
+  // 設定固定底圖載入
+  const BASE1_SRC = 'img/ROC_ID_F.JPG';
+  const BASE2_SRC = 'img/ROC_ID_B.JPG';
+  img1.onload = ()=>{ fitCanvasToImage(c1, img1); renderImage1(); };
+  img2.onload = ()=>{ fitCanvasToImage(c2, img2); renderImage2(); };
+  img1.src = BASE1_SRC; img2.src = BASE2_SRC;
+
+  // 初始渲染（若底圖尚未載入，會先顯示佔位）
   renderAll();
 })();
 </script>
