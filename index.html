@@ -309,7 +309,7 @@
 
   // 綁定事件
   ['input','change'].forEach(ev=>{
-    [id_name,birth_y,birth_m,birth_d,card_issue_y,card_issue_m,card_issue_d,id_number,father_name,mother_name,spouse_name,bcx,bcy,bcw,bch].forEach(el=> on(el, ev, renderAll));
+    [id_name,birth_y,birth_m,birth_d,card_issue_y,card_issue_m,card_issue_d,id_number,father_name,mother_name,military,address,spouse_name,bcx,bcy,bcw,bch].forEach(el=> on(el, ev, renderAll));
   });
 
   on($('#img1'), 'change', (e)=>{
