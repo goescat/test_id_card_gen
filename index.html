@@ -90,7 +90,8 @@
           <div class="row"><label>母</label><input id="mother_name" type="text" value="母親名" /></div>
           <div class="row"><label>配偶</label><input id="spouse_name" type="text" value="配偶名" /></div>
           <div class="row"><label>役別</label><input id="military" type="text" value="免役" /></div>
-          <div class="row"><label>住址</label><input id="address" type="text" value="台北市信義區測試里99鄰預設路12號" />
+          <div class="row"><label>出生地</label><input id="born_place" type="text" value="台北市" /></div>
+          <div class="row"><label>住址</label><input id="address" type="text" value="台北市信義區測試里99鄰預設路12號" /></div>
         </div>
 
           <canvas id="canvas2" width="1000" height="600"></canvas>
@@ -120,11 +121,12 @@
   };
 
   const layout2 = {
-    '2-1': { x: 14,  y: 12, fontH: 6 },
-    '2-2': { x: 55,  y: 12, fontH: 6 },
+    '2-1': { x: 14,  y: 11, fontH: 6 },
+    '2-2': { x: 55,  y: 11, fontH: 6 },
     '2-3': { x: 20,  y: 25, fontH: 6 },
     '2-4': { x: 60,  y: 25, fontH: 6 },
-    '2-5': { x: 20,  y: 54, fontH: 5 },
+    '2-5': { x: 20,  y: 38, fontH: 6 },
+    '2-6': { x: 20,  y: 54, fontH: 5 },
   };
 
   // Helpers
@@ -268,7 +270,7 @@
     const h = Math.max(40, Math.round(targetH*scale));
     tmp.width = w; tmp.height = h;
     const ok = (window.JsBarcode && typeof JsBarcode === 'function');
-    const opts = { format:'code128', displayValue:true, font:"system-ui", fontSize: Math.round(h*0.18), margin: 2 };
+    const opts = { format:'CODE128B', displayValue:true, font:"system-ui", fontSize: Math.round(h*0.18), margin: 2 };
     try{
       if(ok){
         JsBarcode(tmp, value || '', opts);
@@ -292,7 +294,8 @@
     const p_mother_name = drawText(ctx2, mother_name.value, layout2['2-2'], W, H);
     const p_spouse_name = drawText(ctx2, spouse_name.value, layout2['2-3'], W, H);
     const p_military = drawText(ctx2, military.value, layout2['2-4'], W, H);
-    const p_address = drawText(ctx2, address.value, layout2['2-5'], W, H);
+    const p_born_place = drawText(ctx2, born_place.value, layout2['2-5'], W, H);
+    const p_address = drawText(ctx2, address.value, layout2['2-6'], W, H);
 
 
     // 條碼（來自 1-5）
@@ -309,7 +312,7 @@
 
   // 綁定事件
   ['input','change'].forEach(ev=>{
-    [id_name,birth_y,birth_m,birth_d,card_issue_y,card_issue_m,card_issue_d,id_number,father_name,mother_name,military,address,spouse_name,bcx,bcy,bcw,bch].forEach(el=> on(el, ev, renderAll));
+    [id_name,birth_y,birth_m,birth_d,card_issue_y,card_issue_m,card_issue_d,id_number,father_name,mother_name,military, born_place, address,spouse_name,bcx,bcy,bcw,bch].forEach(el=> on(el, ev, renderAll));
   });
 
   on($('#img1'), 'change', (e)=>{
